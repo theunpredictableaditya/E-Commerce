@@ -39,5 +39,42 @@ const registerUser = asyncHandler(async(req, res)=>{
     .json(new apiResponse(200, createdUser, "User Registered Successfully \n Please LogIn Using Your Credentials"));
 })
 
+const loginUser = asyncHandler(async(req, res)=>{
+    const {username, email, password} = req.body;
+
+    if(!password.trim()){
+        throw new apiError(401, "Invalid Credentials!!")
+    }
+
+    if(!username && !email){
+        throw new apiError(401, "Either Email Or Username Is Required!!");
+    }
+
+    const user = userModel.findOne(
+        {
+            $or: [{email}, {username}]
+        }
+    )
+
+    if(!user){
+        throw new apiError(409, "User Doesnot Exists!!");
+    }
+
+    //password validation
+    const isPasswordValid = await user.isPasswordCorrect(password);
+
+    if(!isPasswordValid){
+        throw new apiError(400, "Invalid Credentials!!!");
+    }
+
+    //accessToken generation
+    const accessToken = user.generateAccessToken();
+
+    //sending cookie as response
+    res.status(200)
+    .cookie("accessToken", accessToken)
+    .json(new apiResponse(200, user, "User Logged In Successfully"));
+
+})
 
 export {registerUser}
