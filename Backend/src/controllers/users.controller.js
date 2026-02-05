@@ -50,7 +50,7 @@ const loginUser = asyncHandler(async(req, res)=>{
         throw new apiError(401, "Either Email Or Username Is Required!!");
     }
 
-    const user = userModel.findOne(
+    const user = await userModel.findOne(
         {
             $or: [{email}, {username}]
         }
@@ -77,4 +77,19 @@ const loginUser = asyncHandler(async(req, res)=>{
 
 })
 
-export {registerUser}
+const logoutUser = asyncHandler(async(req, res)=>{
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res.status(200)
+    .clearCookie("accessToken", options)
+    .json(new apiResponse(200, "User Logged Out Successfully"));
+})
+
+export {
+    registerUser,
+    loginUser,
+    logoutUser
+}
