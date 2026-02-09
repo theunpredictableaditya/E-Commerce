@@ -93,6 +93,14 @@ const RegisterLogin = () => {
     loginUsername: "",
     loginPassword: ""
   })}
+
+    if(data.data.role === "USER"){
+      //Navigate for user
+      console.log("USER")
+    }else if(data.data.role === "ADMIN"){
+      //Navigate for Admin
+      console.log("ADMIN")
+    };
   }
 
   return <>
