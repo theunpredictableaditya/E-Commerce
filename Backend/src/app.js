@@ -20,4 +20,15 @@ import productRouter from "./routes/products.routes.js"
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 
+
+//global error handling middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
 export { app };

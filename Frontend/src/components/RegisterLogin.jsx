@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { toast } from 'react-toastify';
 
 const RegisterLogin = () => {
 
@@ -39,7 +40,24 @@ const RegisterLogin = () => {
     })
 
     const data = await response.json()
-    console.log(data)
+    
+    if(data.success === false){
+      toast.error(data.message)
+    }
+
+    if(data.statusCode === 200){
+      toast.success("User Registered Successfully");
+      toast.success("Please LogIn Using Your Credentials");
+      setFormData({
+    fullName: "",
+    username: "",
+    email: "",
+    password: "",
+    loginEmail: "",
+    loginUsername: "",
+    loginPassword: ""
+  })}
+
   }
 
   const loginData = async (e) => {
@@ -59,7 +77,22 @@ const RegisterLogin = () => {
     })
 
     const data = await response.json()
-    console.log(data)
+    
+    if(data.success === false){
+      toast.error(data.message)
+    }
+
+    if(data.statusCode === 200){
+      toast.success("Successfully Logged Into Your Account");
+      setFormData({
+    fullName: "",
+    username: "",
+    email: "",
+    password: "",
+    loginEmail: "",
+    loginUsername: "",
+    loginPassword: ""
+  })}
   }
 
   return <>
