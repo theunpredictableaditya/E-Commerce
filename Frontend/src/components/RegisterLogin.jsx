@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterLogin = () => {
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -92,15 +95,23 @@ const RegisterLogin = () => {
     loginEmail: "",
     loginUsername: "",
     loginPassword: ""
-  })}
+  })
 
-    if(data.data.role === "USER"){
-      //Navigate for user
-      console.log("USER")
-    }else if(data.data.role === "ADMIN"){
-      //Navigate for Admin
-      console.log("ADMIN")
-    };
+  // console.log(data.data.role)
+  navigate("/entry/home", {
+    state: {
+      role: data.data.role
+    }
+  })
+}
+
+    // if(data.data.role === "USER"){
+    //   //Navigate for user
+    //   console.log("USER")
+    // }else if(data.data.role === "ADMIN"){
+    //   //Navigate for Admin
+    //   console.log("ADMIN")
+    // };
   }
 
   return <>
