@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,12 @@ const RegisterLogin = () => {
     loginPassword: ""
   })
 
+  //to check whether the user is Logged In or Not
+  useEffect(() => {
+    isLoggedIn();
+  }, [])
+  
+
   const handleChange = (event) => {
     const {name, value: inputValue} = event.target;
 
@@ -23,6 +29,29 @@ const RegisterLogin = () => {
       ...prev,
       [name]: inputValue
     }))
+  }
+
+  //to fetch data from backend about the users log In 
+  const isLoggedIn = async () => {
+    const response = await fetch("/api/v1/users/alreadyLoggedIn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+
+    const data = await response.json()
+
+    if(data.statusCode === 200){
+        navigate("/entry/home", {
+      state: {
+        role: data.data.role
+      }
+    })
+    }
+
+    console.log(data)
   }
 
   const signUpData = async (e) => {

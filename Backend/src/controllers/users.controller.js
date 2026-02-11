@@ -2,6 +2,7 @@ import { userModel } from "../models/user.model.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import jwt from "jsonwebtoken";
 
 const registerUser = asyncHandler(async(req, res)=>{
 
@@ -88,8 +89,34 @@ const logoutUser = asyncHandler(async(req, res)=>{
     .json(new apiResponse(200, "User Logged Out Successfully"));
 })
 
+const userAlreadyloggedIn = asyncHandler(async(req, res)=> {
+    const cookie = req.cookies;
+
+    if(!cookie){
+        throw new apiError(401, "Haven't Logged In Correctly")
+    }
+
+    const token = cookie.accessToken;
+
+    if(!token){
+        throw new apiError(400, "Invalid Cookie");
+    }
+
+    const tokenDetails = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+
+    const user = await userModel.findById(tokenDetails._id);
+
+    if(!user){
+        throw new apiError(400, "Please Log In First");
+    }
+
+    res.status(200)
+    .json(new apiResponse(200, user, "Already logged In"));
+})
+
 export {
     registerUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    userAlreadyloggedIn
 }

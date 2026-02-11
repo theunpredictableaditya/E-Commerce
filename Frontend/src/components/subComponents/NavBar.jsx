@@ -1,6 +1,28 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+
+  const navigate = useNavigate()
+
+  const handleLogOut = async() => {
+    const response = await fetch("/api/v1/users/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if(data.statusCode === 200){
+        navigate("/")
+    }
+  }
+
   return (
      <nav className="flex items-center justify-between px-6 py-3 border-b">
       {/* Logo */}
@@ -83,7 +105,7 @@ const NavBar = () => {
         </button>
 
         {/* Logout */}
-        <button className="p-2 hover:bg-gray-100 rounded-full">
+        <button onClick={handleLogOut} className="p-2 hover:bg-gray-100 rounded-full">
           <svg
             viewBox="0 0 24 24"
             fill="none"
