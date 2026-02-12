@@ -51,7 +51,7 @@ const RegisterLogin = () => {
     })
     }
 
-    console.log(data)
+    // console.log(data)
   }
 
   const signUpData = async (e) => {
