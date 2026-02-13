@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = (props) => {
+
+    const [showAdminBtn, setshowAdminBtn] = useState(false);
 
     const navigate = useNavigate();
 
@@ -9,6 +11,39 @@ const SideBar = () => {
         console.log(to)
         navigate(to)
     }
+
+
+      const [role, setRole] = useState("USER")
+
+
+  //function to get the role of the user
+  const getRole = async () => {
+    const response = await fetch("/api/v1/users/alreadyLoggedIn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include'
+    })
+
+    const data = await response.json()
+
+    // console.log(data.data.role)
+
+    return data.data.role;
+  }
+
+  useEffect(() => {
+    (async function(){
+      const role = await getRole();
+    if(role === "ADMIN"){
+      setshowAdminBtn(true)
+    }
+    })()
+
+  }, [])
+
+  console.log(showAdminBtn)
 
 
   return (
@@ -29,6 +64,7 @@ const SideBar = () => {
       <SidebarButton onClick={()=>{navigateTo("/entry/services")}} label="Services & Feedback" />
       <SidebarButton onClick={()=>{navigateTo("/entry/account")}} label="Account & Privacy" />
       <SidebarButton onClick={()=>{navigateTo("/entry/orders")}} label="My Orders" />
+      {showAdminBtn && <SidebarButton onClick={()=>{navigateTo("/entry/admin-panel")}} label="Admin Panel" />}
     </aside>
   );
 };

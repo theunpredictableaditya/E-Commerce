@@ -19,7 +19,7 @@ const Orders = () => {
               className="bg-white rounded-xl shadow p-5 flex gap-5"
             >
               {/* LEFT SIDE IMAGE */}
-              <div className="w-28 h-28 bg-gray-200 rounded-lg flex-shrink-0" />
+              <div className="w-28 h-28 bg-gray-200 rounded-lg" />
 
               {/* RIGHT SIDE INFO */}
               <div className="flex flex-col justify-between flex-1">

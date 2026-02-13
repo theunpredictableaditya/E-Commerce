@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom'
 import NavBar from './subComponents/NavBar'
 import SideBar from './subComponents/SideBar'
@@ -6,8 +6,10 @@ import Home from './pages/Home'
 import Services from './pages/Services'
 import Account from './pages/Account'
 import Orders from './pages/Orders'
+import Admin from './pages/Admin'
 
 const Hash = () => {
+
   return (
     <>
         <NavBar/>
@@ -18,6 +20,7 @@ const Hash = () => {
                 <Route path='/services' element={<Services/>}/>
                 <Route path='/account' element={<Account/>}/>
                 <Route path='/orders' element={<Orders/>}/>
+                <Route path='/admin-panel' element={<Admin/>}/>
             </Routes>
         </div>
     </>
