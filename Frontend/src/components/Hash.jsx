@@ -7,6 +7,7 @@ import Services from './pages/Services'
 import Account from './pages/Account'
 import Orders from './pages/Orders'
 import Admin from './pages/Admin'
+import Cart from './pages/Cart'
 
 const Hash = () => {
 
@@ -21,6 +22,7 @@ const Hash = () => {
                 <Route path='/account' element={<Account/>}/>
                 <Route path='/orders' element={<Orders/>}/>
                 <Route path='/admin-panel' element={<Admin/>}/>
+                <Route path='/cart' element={<Cart/>}/>
             </Routes>
         </div>
     </>

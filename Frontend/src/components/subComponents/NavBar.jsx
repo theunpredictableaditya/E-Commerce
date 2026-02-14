@@ -23,6 +23,10 @@ const NavBar = () => {
     }
   }
 
+  const handleCartClick = () => {
+    navigate("/entry/cart")
+  }
+
   return (
      <nav className="flex items-center justify-between px-6 py-3 border-b">
       {/* Logo */}
@@ -42,7 +46,7 @@ const NavBar = () => {
       {/* Actions */}
       <div className="flex items-center gap-4">
         {/* Cart */}
-        <button className="p-2 hover:bg-gray-100 rounded-full">
+        <button onClick={handleCartClick} className="p-2 hover:bg-gray-100 rounded-full">
           <svg
             viewBox="0 0 24 24"
             fill="none"
