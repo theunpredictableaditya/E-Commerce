@@ -19,7 +19,7 @@ const Cart = () => {
           <div className="bg-white border rounded-xl shadow-sm p-5 flex gap-5">
 
             {/* Image */}
-            <div className="w-28 h-28 bg-gray-200 rounded-lg flex-shrink-0"></div>
+            <div className="w-28 h-28 bg-gray-200 rounded-lg"></div>
 
             {/* Info */}
             <div className="flex flex-col flex-1 gap-2">
