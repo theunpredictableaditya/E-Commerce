@@ -6,6 +6,11 @@ const productSchema = new Schema({
         trim: true,
         required: true
     },
+    productImage: {
+        type: String,     //Cloudinary Url
+        trim: true,
+        required: true
+    },
     price: {
         type: Number,
         required: true

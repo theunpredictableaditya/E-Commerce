@@ -1,17 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Admin = () => {
   return (
     <div className="flex-1 p-8 bg-gray-50 overflow-y-auto">
-
       {/* Title */}
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-        Admin Panel
-      </h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Admin Panel</h1>
 
       {/* ROW CONTAINER */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
         {/* ================= ADD PRODUCT ================= */}
         <div className="bg-white rounded-xl shadow-sm border p-6">
           <h2 className="text-lg font-semibold mb-4 text-gray-700">
@@ -19,7 +15,6 @@ const Admin = () => {
           </h2>
 
           <div className="flex flex-col gap-4">
-
             {/* Image Upload */}
             <label className="border-2 border-dashed rounded-lg h-40 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition">
               <input type="file" className="hidden" />
@@ -29,6 +24,33 @@ const Admin = () => {
             </label>
 
             {/* Inputs */}
+
+            <select
+              className="
+      px-4
+      py-2
+      border border-gray-200
+      rounded-lg
+      bg-white
+      text-gray-700
+      shadow-sm
+      cursor-pointer
+      outline-none
+      hover:border-gray-300
+      focus:ring-2
+      focus:ring-blue-500
+      transition
+    "
+              defaultValue=""
+              onChange={(e) => console.log(e.target.value)}
+            >
+              <option value="" disabled>
+                Select Category
+              </option>
+              <option value="electronics">Electronics</option>
+              <option value="groceries">Groceries</option>
+              <option value="clothings">Clothings</option>
+            </select>
             <input
               type="text"
               placeholder="Product Name"
@@ -64,7 +86,6 @@ const Admin = () => {
           </h2>
 
           <div className="flex flex-col gap-4">
-
             <input
               type="text"
               placeholder="Enter Product ID or Name"
@@ -79,13 +100,11 @@ const Admin = () => {
             <div className="mt-4 p-4 rounded-lg bg-gray-50 border text-sm text-gray-500">
               Deleted products will be permanently removed from inventory.
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
