@@ -2,13 +2,14 @@ import { v2 as cloudinary } from "cloudinary";
 import fs from "fs"
 
 cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_KEY,
-    api_secret: process.env.CLOUD_SECRET
+    cloud_name: "dlqejoxvq",
+    api_key: 193645585899437,
+    api_secret: "k6TzUlUTZGTkWGIfR8ybcpqndzA"
 })
 
 async function uploadOnCloudinary (localFilePath) {
     try {
+        console.log(process.env.CLOUD_NAME)
         if (!localFilePath) return null;
     
         // upload the file on cloudinary
