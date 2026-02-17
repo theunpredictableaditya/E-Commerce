@@ -1,6 +1,79 @@
-import React from "react";
+import React, {useState} from "react";
+import { toast } from "react-toastify";
 
 const Admin = () => {
+
+  const [productData, setProductData] = useState({
+    productName : "",
+    productDescription: "",
+    productQuantity: "",
+    productPrice: "",
+    productCategory: "",
+    productImage: null
+  })
+
+  const [preview, setPreview] = useState(null)
+
+    const handleChange = (event) => {
+    const {name, value: inputValue} = event.target;
+
+    setProductData((prev)=>({
+      ...prev,
+      [name]: inputValue
+    }))
+  }
+
+  const handleImage = (event) => {
+
+    const file = event.target.files[0];
+
+    if(file){
+
+      setProductData({
+        ...productData,
+        productImage: event.target.files[0]
+      })
+
+      setPreview(URL.createObjectURL(file));
+    }
+  }
+
+  const addProduct = async() => {
+    const formData = new FormData();
+    formData.append("productName", productData.productName);
+    formData.append("productDescription", productData.productDescription);
+    formData.append("productQuantity", productData.productQuantity);
+    formData.append("productPrice", productData.productPrice);
+    formData.append("productCategory", productData.productCategory);
+    
+    if(productData.productImage){
+      formData.append("productImage", productData.productImage);
+    }
+    const response = await fetch("/api/v1/products/add-product",{
+      method: "POST",
+      body: formData,
+      credentials: "include"
+    })
+
+    const data = await response.json();
+
+    if(data.statusCode === 200){
+      toast.success(data.message);
+    }
+
+    setProductData({
+    productName : "",
+    productDescription: "",
+    productQuantity: "",
+    productPrice: "",
+    productCategory: "",
+    productImage: null
+  })
+
+    console.log(data);
+  }
+
+
   return (
     <div className="flex-1 p-8 bg-gray-50 overflow-y-auto">
       {/* Title */}
@@ -17,15 +90,19 @@ const Admin = () => {
           <div className="flex flex-col gap-4">
             {/* Image Upload */}
             <label className="border-2 border-dashed rounded-lg h-40 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition">
-              <input type="file" className="hidden" />
-              <span className="text-gray-400">
+              <input type="file" className="hidden" name="productImage" /*value={productData.productImage}*/ onChange={handleImage}/>
+              {preview ? (<img src={preview} alt="preview" className="h-full w-full object-cover rounded-lg"></img>) : (<span className="text-gray-400">
                 Drop Image or Click to Upload
-              </span>
+              </span>)}
+              
             </label>
 
             {/* Inputs */}
 
             <select
+              name="productCategory"
+              value={productData.productCategory}
+              onChange={handleChange}
               className="
       px-4
       py-2
@@ -41,8 +118,6 @@ const Admin = () => {
       focus:ring-blue-500
       transition
     "
-              defaultValue=""
-              onChange={(e) => console.log(e.target.value)}
             >
               <option value="" disabled>
                 Select Category
@@ -52,28 +127,40 @@ const Admin = () => {
               <option value="clothings">Clothings</option>
             </select>
             <input
+            name="productName"
+            value={productData.productName}
+            onChange={handleChange}
               type="text"
               placeholder="Product Name"
               className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
             />
 
             <textarea
+            name="productDescription"
+            value={productData.productDescription}
+            onChange={handleChange}
               placeholder="Product Description"
               className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
             />
 
             <input
+            name="productQuantity"
+            value={productData.productQuantity}
+            onChange={handleChange}
               type="number"
               placeholder="Quantity"
               className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
             />
             <input
+            name="productPrice"
+            value={productData.productPrice}
+            onChange={handleChange}
               type="number"
               placeholder="Price"
               className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
             />
 
-            <button className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
+            <button className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition" onClick={addProduct}>
               Add Product
             </button>
           </div>
