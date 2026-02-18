@@ -43,6 +43,24 @@ const createProduct = asyncHandler(async(req, res)=>{
     .json(new apiResponse(200, product, "Product Created Successfully"));
 })
 
+const deleteProduct = asyncHandler(async(req, res)=> {
+    const { productId } = req.body;
+
+    if(!productId){
+        throw new apiError(400, "Product Not Accessible")
+    }
+
+    const product = await productModel.findByIdAndDelete(productId);
+
+    if(!product){
+        throw new apiError(400, "Product Cannot Be Deleted");
+    }
+
+    res.status(200)
+    .json(new apiResponse(200, product, "Product Has Been Deleted Successfully"));
+})
+
 export {
-    createProduct
+    createProduct,
+    deleteProduct
 }
