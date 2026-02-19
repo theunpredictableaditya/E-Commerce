@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 const Admin = () => {
 
+  //for adding prouct
   const [productData, setProductData] = useState({
     productName : "",
     productDescription: "",
@@ -71,6 +72,30 @@ const Admin = () => {
   })
 
     console.log(data);
+  }
+
+
+  //for deleting product
+  const [productId, setProductId] = useState("")
+
+  const handleProductId = (e) => {
+    setProductId(e.target.value);
+  }
+
+  const deleteProduct = async() => {
+    const response = await fetch("/api/v1/products/delete-product", {
+      method: "POST",
+      body: {productId},
+      credentials: "include"
+    })
+
+    const data = await response.json();
+
+    if(data.statusCode === 200){
+      toast.success(data.message);
+    }
+
+    setProductId("")
   }
 
 
@@ -177,9 +202,13 @@ const Admin = () => {
               type="text"
               placeholder="Enter Product ID or Name"
               className="border rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-red-400"
+              value={productId}
+              onChange={handleProductId}
             />
 
-            <button className="bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition">
+            <button 
+            className="bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition"
+            onClick={deleteProduct}>
               Delete Product
             </button>
 
