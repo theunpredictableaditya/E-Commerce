@@ -11,7 +11,7 @@ router.route("/add-product").post(
     createProduct
 )
 
-router.route("delete-product").post(
+router.route("/delete-product").post(
     verifyAdmin,
     deleteProduct
 )

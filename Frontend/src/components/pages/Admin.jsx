@@ -85,7 +85,10 @@ const Admin = () => {
   const deleteProduct = async() => {
     const response = await fetch("/api/v1/products/delete-product", {
       method: "POST",
-      body: {productId},
+      headers: {
+    'Content-Type': 'application/json',
+  },
+      body: JSON.stringify({productId}),
       credentials: "include"
     })
 
