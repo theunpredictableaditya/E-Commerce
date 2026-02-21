@@ -140,9 +140,42 @@ const getrole = asyncHandler(async(req, res)=>{
     .json(new apiResponse(200, user, "User Role In User Data"));
 })
 
+const updateCredentials = asyncHandler(async(req, res)=> {
+
+    const {what, data, currentPassword} = req.body;
+
+    const userId = req.user._id;
+
+    const userWithOldCredentials = await userModel.findById(userId);
+
+    if(!userWithOldCredentials){
+        throw new apiError(409, "Unauthorzied Access")
+    }
+
+    const isVerified = userWithOldCredentials.isPasswordCorrect(currentPassword);
+
+    if(!isVerified){
+        throw new apiError(400, "Invalid Access");
+    }
+
+    if([what, data].some((field)=>field.trim() === "")){
+        throw new apiError(400, "Essential Data Are Required")
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId, {what: data});
+
+    if(!updatedUser){
+        throw new apiError(500, "Error Occured While Updating Credentials")
+    }
+
+    res.status(200)
+    .json(new apiResponse(200, updatedUser, "Credentials Updated Successfully"))
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
-    userAlreadyloggedIn
+    userAlreadyloggedIn,
+    updateCredentials
 }
