@@ -144,6 +144,10 @@ const updateCredentials = asyncHandler(async(req, res)=> {
 
     const {what, data, currentPassword} = req.body;
 
+    if(!what || !data || !currentPassword || !what.trim() || !data.trim() || !currentPassword.trim()){
+        throw new apiError(400, "Essential Data Are Required")
+    }
+
     const userId = req.user._id;
 
     const userWithOldCredentials = await userModel.findById(userId);
@@ -158,11 +162,7 @@ const updateCredentials = asyncHandler(async(req, res)=> {
         throw new apiError(400, "Invalid Access");
     }
 
-    if([what, data].some((field)=>field.trim() === "")){
-        throw new apiError(400, "Essential Data Are Required")
-    }
-
-    const updatedUser = await userModel.findByIdAndUpdate(userId, {what: data});
+    const updatedUser = await userModel.findByIdAndUpdate(userId, {[what]: data});
 
     if(!updatedUser){
         throw new apiError(500, "Error Occured While Updating Credentials")
