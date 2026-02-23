@@ -3,7 +3,12 @@ import React, { useState } from "react";
 const categories = ["All", "Electronics", "Groceries", "Clothings"];
 
 const Home = () => {
-  const [activeCategory, setActiveCategory] = useState("Electronics");
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  //function to load the product for all category for load
+  const loadProduct = async() => {
+    const response = await fetch("/api/v1/products/load-product")
+  }
 
   return (
     // Whole home container padding
