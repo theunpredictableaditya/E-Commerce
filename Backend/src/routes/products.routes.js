@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { upload } from "../middlewares/multer.middleware.js";
-import { createProduct, deleteProduct } from "../controllers/products.controller.js";
-import { verifyAdmin } from "../middlewares/auth.middleware.js";
+import { createProduct, deleteProduct, loadProduct } from "../controllers/products.controller.js";
+import { verifyAdmin, verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -14,6 +14,11 @@ router.route("/add-product").post(
 router.route("/delete-product").post(
     verifyAdmin,
     deleteProduct
+)
+
+router.route("/load").get(
+    verifyJWT,
+    loadProduct
 )
 
 export default router;

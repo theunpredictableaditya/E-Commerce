@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const categories = ["All", "Electronics", "Groceries", "Clothings"];
 
@@ -6,9 +6,68 @@ const Home = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
   //function to load the product for all category for load
+
+  const loaderRef = useRef(false);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(null)
+  const [products, setProducts] = useState([])
+
   const loadProduct = async() => {
     const response = await fetch("/api/v1/products/load-product")
   }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries=>{
+      if(entries[0].isIntersecting && !loading && hasMore){
+        setPage(prev=>prev+1)
+      }
+    })
+
+    if(loaderRef.current){
+      observer.observe(loaderRef.current)
+    }
+  
+    return () => {
+      observer.disconnect();
+    }
+  }, [loading, hasMore])
+
+
+  useEffect(() => {
+    const fetchProduct = async() => {
+      setLoading(true);
+      const response  = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
+
+      const data = await response.json();
+
+      console.log("Data fetched");
+
+      setProducts(prev=> [...prev, ...data.products])
+      setHasMore(data.hasMore);
+      setLoading(false);
+    }
+
+    if(loading || !hasMore){
+      fetchProduct();
+    }
+  
+  }, [page])
+
+
+  //to load the products for first look
+  useEffect(() => {
+    const loadFirstLot = async () => {
+      const response = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
+      const data = await response.json();
+      console.log("First Lot Loaded Successfully", data)
+    }
+
+
+    loadFirstLot()
+  
+  }, [])
+  
 
   return (
     // Whole home container padding
@@ -189,6 +248,10 @@ const Home = () => {
             </div>
           </div>
         </div>
+      </div>
+      {/*loaderRef for infinite loading*/}
+      <div ref={loaderRef} className="flex items-center justify-center w-full">
+        {loading && <p>Loading Products...</p>}
       </div>
     </div>
   );

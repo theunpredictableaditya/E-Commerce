@@ -60,7 +60,29 @@ const deleteProduct = asyncHandler(async(req, res)=> {
     .json(new apiResponse(200, product, "Product Has Been Deleted Successfully"));
 })
 
+const loadProduct = asyncHandler(async(req, res)=>{
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
+
+    const skip = (page-1) * limit;
+
+    const products = await productModel.find()
+    .skip(skip)
+    .limit(limit)
+    .sort({createdAt : -1});
+    
+    const total = await productModel.countDocuments();
+
+    res.status(200)
+    .json(new apiResponse( 200, {
+        product: products,
+        hasMore: skip + products.length < total
+    }, "Product List Send SuccessFully"));
+})
+
 export {
     createProduct,
-    deleteProduct
+    deleteProduct,
+    loadProduct
 }
