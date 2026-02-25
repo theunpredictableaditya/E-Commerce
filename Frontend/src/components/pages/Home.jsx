@@ -43,7 +43,7 @@ const Home = () => {
 
       console.log("Data fetched");
 
-      setProducts(prev=> [...prev, ...data.products])
+      setProducts(prev=> [...prev, ...data.data.product])
       setHasMore(data.hasMore);
       setLoading(false);
     }
@@ -60,7 +60,8 @@ const Home = () => {
     const loadFirstLot = async () => {
       const response = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
       const data = await response.json();
-      console.log("First Lot Loaded Successfully", data)
+      console.log("First Lot Loaded Successfully", data.data.product)
+      setProducts(prev=> [...prev, ...data.data.product])
     }
 
 
@@ -124,7 +125,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="border rounded-lg p-4 flex gap-4 bg-white">
+        {products.map((item)=>(
+          <div className="border rounded-lg p-4 flex gap-4 bg-white">
           {/* Image */}
           <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
             <span className="text-xs text-gray-400">Image</span>
@@ -155,99 +157,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="border rounded-lg p-4 flex gap-4 bg-white">
-          {/* Image */}
-          <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400">Image</span>
-          </div>
-
-          {/* Details */}
-          <div className="flex flex-col justify-between flex-1">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-gray-900">
-                Product Name
-              </h3>
-              <p className="text-xs text-gray-500">
-                Short product description goes here.
-              </p>
-              <p className="text-sm font-medium text-gray-900">
-                $199.00
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
-                Add to Cart
-              </button>
-              <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="border rounded-lg p-4 flex gap-4 bg-white">
-          {/* Image */}
-          <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400">Image</span>
-          </div>
-
-          {/* Details */}
-          <div className="flex flex-col justify-between flex-1">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-gray-900">
-                Product Name
-              </h3>
-              <p className="text-xs text-gray-500">
-                Short product description goes here.
-              </p>
-              <p className="text-sm font-medium text-gray-900">
-                $199.00
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
-                Add to Cart
-              </button>
-              <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="border rounded-lg p-4 flex gap-4 bg-white">
-          {/* Image */}
-          <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400">Image</span>
-          </div>
-
-          {/* Details */}
-          <div className="flex flex-col justify-between flex-1">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-gray-900">
-                Product Name
-              </h3>
-              <p className="text-xs text-gray-500">
-                Short product description goes here.
-              </p>
-              <p className="text-sm font-medium text-gray-900">
-                $199.00
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
-                Add to Cart
-              </button>
-              <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
+        ))}
+        
       </div>
       {/*loaderRef for infinite loading*/}
       <div ref={loaderRef} className="flex items-center justify-center w-full">
@@ -258,3 +169,35 @@ const Home = () => {
 };
 
 export default Home;
+
+        // <div className="border rounded-lg p-4 flex gap-4 bg-white">
+        //   {/* Image */}
+        //   <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
+        //     <span className="text-xs text-gray-400">Image</span>
+        //   </div>
+
+        //   {/* Details */}
+        //   <div className="flex flex-col justify-between flex-1">
+        //     <div className="space-y-1">
+        //       <h3 className="text-sm font-semibold text-gray-900">
+        //         Product Name
+        //       </h3>
+        //       <p className="text-xs text-gray-500">
+        //         Short product description goes here.
+        //       </p>
+        //       <p className="text-sm font-medium text-gray-900">
+        //         $199.00
+        //       </p>
+        //     </div>
+
+        //     {/* Buttons */}
+        //     <div className="flex gap-2 mt-4">
+        //       <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
+        //         Add to Cart
+        //       </button>
+        //       <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
+        //         Buy Now
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
