@@ -13,9 +13,11 @@ const Hash = () => {
 
   return (
     <>
+    <div className='h-screen flex flex-col overflow-hidden'>
         <NavBar/>
-        <div className="flex">
+        <div className="flex flex-1 overflow-hidden">
             <SideBar/>
+            <div  className="flex-1 overflow-y-auto">
             <Routes>
                 <Route path='/home' element={<Home/>}/>
                 <Route path='/services' element={<Services/>}/>
@@ -24,7 +26,9 @@ const Hash = () => {
                 <Route path='/admin-panel' element={<Admin/>}/>
                 <Route path='/cart' element={<Cart/>}/>
             </Routes>
+            </div>
         </div>
+    </ div>
     </>
   )
 }

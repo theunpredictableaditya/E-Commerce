@@ -94,55 +94,25 @@ const Home = () => {
       {/* Items Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Item Card */}
-        <div className="border rounded-lg p-4 flex gap-4 bg-white">
-          {/* Image */}
-          <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400">Image</span>
-          </div>
-
-          {/* Details */}
-          <div className="flex flex-col justify-between flex-1">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-gray-900">
-                Product Name
-              </h3>
-              <p className="text-xs text-gray-500">
-                Short product description goes here.
-              </p>
-              <p className="text-sm font-medium text-gray-900">
-                $199.00
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-2 mt-4">
-              <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
-                Add to Cart
-              </button>
-              <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* Demo Item Card Was Here And Is Placed Below now */}
         {products.map((item)=>(
-          <div className="border rounded-lg p-4 flex gap-4 bg-white">
+          <div key={item._id} className="border rounded-lg p-4 flex gap-4 bg-white">
           {/* Image */}
           <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400">Image</span>
+            <span className="text-xs text-gray-400"><img src={item.productImage} alt="" /></span>
           </div>
 
           {/* Details */}
           <div className="flex flex-col justify-between flex-1">
             <div className="space-y-1">
               <h3 className="text-sm font-semibold text-gray-900">
-                Product Name
+                {item.name}
               </h3>
               <p className="text-xs text-gray-500">
-                Short product description goes here.
+                {item.description}
               </p>
               <p className="text-sm font-medium text-gray-900">
-                $199.00
+                NPR {item.price}
               </p>
             </div>
 
@@ -171,6 +141,41 @@ const Home = () => {
 export default Home;
 
         // <div className="border rounded-lg p-4 flex gap-4 bg-white">
+        //   {/* Image */}
+        //   <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
+        //     <span className="text-xs text-gray-400">Image</span>
+        //   </div>
+
+        //   {/* Details */}
+        //   <div className="flex flex-col justify-between flex-1">
+        //     <div className="space-y-1">
+        //       <h3 className="text-sm font-semibold text-gray-900">
+        //         Product Name
+        //       </h3>
+        //       <p className="text-xs text-gray-500">
+        //         Short product description goes here.
+        //       </p>
+        //       <p className="text-sm font-medium text-gray-900">
+        //         $199.00
+        //       </p>
+        //     </div>
+
+        //     {/* Buttons */}
+        //     <div className="flex gap-2 mt-4">
+        //       <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
+        //         Add to Cart
+        //       </button>
+        //       <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
+        //         Buy Now
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
+
+
+        // Demo Item Card I mentioned About
+
+        //         <div className="border rounded-lg p-4 flex gap-4 bg-white">
         //   {/* Image */}
         //   <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
         //     <span className="text-xs text-gray-400">Image</span>
