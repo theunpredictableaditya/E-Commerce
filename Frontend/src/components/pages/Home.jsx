@@ -18,20 +18,22 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entries=>{
-      if(entries[0].isIntersecting && !loading && hasMore){
-        setPage(prev=>prev+1)
-      }
-    })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setLoading(!loading)
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-    if(loaderRef.current){
-      observer.observe(loaderRef.current)
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
     }
-  
-    return () => {
-      observer.disconnect();
-    }
-  }, [loading, hasMore])
+
+    return () => observer.disconnect();
+  }, [hasMore]);
 
 
   useEffect(() => {
@@ -41,33 +43,33 @@ const Home = () => {
 
       const data = await response.json();
 
-      console.log("Data fetched");
+      console.log("Data fetched", data.data.hasMore);
 
       setProducts(prev=> [...prev, ...data.data.product])
-      setHasMore(data.hasMore);
-      setLoading(false);
+      setHasMore(data.data.hasMore);
     }
-
+    
     if(!loading && hasMore){
       fetchProduct();
+      setLoading(!loading);
     }
   
   }, [page])
 
 
   //to load the products for first look
-  useEffect(() => {
-    const loadFirstLot = async () => {
-      const response = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
-      const data = await response.json();
-      console.log("First Lot Loaded Successfully", data.data.product)
-      setProducts(prev=> [...prev, ...data.data.product])
-    }
+  // useEffect(() => {
+  //   const loadFirstLot = async () => {
+  //     const response = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
+  //     const data = await response.json();
+  //     console.log("First Lot Loaded Successfully", data.data.product)
+  //     setProducts(prev=> [...prev, ...data.data.product])
+  //   }
 
 
-    loadFirstLot()
+  //   loadFirstLot()
   
-  }, [])
+  // }, [])
   
 
   return (
@@ -130,8 +132,9 @@ const Home = () => {
         ))}
         
       </div>
+
       {/*loaderRef for infinite loading*/}
-      <div ref={loaderRef} className="flex items-center justify-center w-full">
+      <div ref={loaderRef} style={{minHeight: 130}} className="bg-amber-600 flex items-center justify-center w-full">
         {loading && <p>Loading Products...</p>}
       </div>
     </div>
