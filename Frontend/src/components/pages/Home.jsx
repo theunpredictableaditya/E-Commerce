@@ -21,7 +21,7 @@ const Home = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          setLoading(!loading)
+          // setLoading(!loading)
           setPage((prev) => prev + 1);
         }
       },
@@ -51,7 +51,7 @@ const Home = () => {
     
     if(!loading && hasMore){
       fetchProduct();
-      setLoading(!loading);
+      setLoading(false);
     }
   
   }, [page])

@@ -71,7 +71,7 @@ const loadProduct = asyncHandler(async(req, res)=>{
     const products = await productModel.find()
     .skip(skip)
     .limit(limit)
-    .sort({createdAt : -1});
+    .sort({createdAt : -1, _id: -1});
     
     const total = await productModel.countDocuments();
 
