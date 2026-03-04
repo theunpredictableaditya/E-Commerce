@@ -64,16 +64,19 @@ const loadProduct = asyncHandler(async(req, res)=>{
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
+    const category = req.query.category || "All";
+
+    const filter = category === "All" ? {} : {category};
     console.log(page, limit)
 
     const skip = (page-1) * limit;
 
-    const products = await productModel.find()
+    const products = await productModel.find(filter)
     .skip(skip)
     .limit(limit)
     .sort({createdAt : -1, _id: -1});
     
-    const total = await productModel.countDocuments();
+    const total = await productModel.countDocuments(filter);
 
     res.status(200)
     .json(new apiResponse( 200, {

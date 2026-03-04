@@ -39,7 +39,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProduct = async() => {
       setLoading(true);
-      const response  = await fetch(`/api/v1/products/load?page=${page}&limit=15`);
+      const response  = await fetch(`/api/v1/products/load?page=${page}&limit=15&category=${activeCategory}`);
 
       const data = await response.json();
 
@@ -80,7 +80,12 @@ const Home = () => {
         {categories.map((category) => (
           <button
             key={category}
-            onClick={() => setActiveCategory(category)}
+            onClick={() => {
+              setActiveCategory(category)
+              setHasMore(true);
+              setProducts([])
+              setPage(1)
+            }}
             className={`px-5 py-2 rounded-md text-sm font-medium transition
               ${
                 activeCategory === category
