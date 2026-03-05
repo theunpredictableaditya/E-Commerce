@@ -85,8 +85,37 @@ const loadProduct = asyncHandler(async(req, res)=>{
     }, "Product List Send SuccessFully"));
 })
 
+const returnProductUponSearch = asyncHandler(async(req, res)=>{
+    const searchQuery = req.query.searchQuery;
+    const searchKeyWords = searchQuery.split(" ");
+    const matchedProducts = [];
+    
+    /*
+    searchKeyWords.forEach(async element => {
+        console.log("Hello")
+        const matchInName = await productModel.find({name: element});
+        if(matchInName){
+            matchedProducts.push(matchInName);
+        }
+        const matchInDescription = await productModel.find({description: element});
+        if(matchInDescription){
+            matchedProducts.push(matchInDescription);
+        }
+        const matchInCategory = await productModel.find({category: element});
+        if(matchInCategory){
+            matchedProducts.push(matchInCategory);
+        }
+    });
+    */
+    matchedProducts.push(await productModel.find({name: searchQuery}));
+
+    res.status(200)
+    .json(new apiResponse(200, matchedProducts, "Product Search Completed"));
+})
+
 export {
     createProduct,
     deleteProduct,
-    loadProduct
-}
+    loadProduct,
+    returnProductUponSearch
+}   
