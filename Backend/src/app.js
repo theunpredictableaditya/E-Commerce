@@ -18,9 +18,13 @@ app.use(express.urlencoded({extended: true, limit: "16kb"}));
 //routes
 import userRouter from "./routes/users.routes.js"
 import productRouter from "./routes/products.routes.js"
+import cartRouter from "./routes/carts.routes.js"
+import orderRouter from "./routes/orders.routes.js"
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/carts", cartRouter);
+app.use("/api/v1/orders", orderRouter);
 
 
 //global error handling middleware
