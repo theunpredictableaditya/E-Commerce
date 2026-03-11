@@ -28,7 +28,7 @@ const NavBar = () => {
   }
 
   return (
-     <nav className="h-[calc(100vh-4rem)] flex items-center justify-between px-6 py-3 border-b">
+     <nav className="h-[4rem)] flex items-center justify-between px-6 py-3 border-b">
       {/* Logo */}
       <div className="flex items-center">
         <img src="https://t3.ftcdn.net/jpg/02/47/48/00/360_F_247480017_ST4hotATsrcErAja0VzdUsrrVBMIcE4u.jpg" alt="logo" className="h-8 w-auto" />

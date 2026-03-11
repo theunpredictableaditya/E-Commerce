@@ -1,6 +1,35 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 const Orders = () => {
+
+  const [orderArray, setOrderArray] = useState([]);
+  const [delivered, setDelivered] = useState(0);
+  const [pending, setPending] = useState(0);
+
+  useEffect(() => {
+    (async function (){
+
+      const response = await fetch("/api/v1/orders/getOrder");
+      
+      const data = await response.json();
+
+      console.log(data.data)
+
+      data.data.forEach(order=>{
+        if(order.item.status === "DELIVERED"){
+          setDelivered(prev => prev + 1);
+        }
+        if(order.item.status === "PENDING"){
+          console.log("hey");
+          setPending(prev => prev + 1);
+        }
+      })
+      
+      setOrderArray(data.data);
+    })()
+  
+  }, [])
+    
   return (
     <div className="pl-6 space-y-6">
 
@@ -13,9 +42,10 @@ const Orders = () => {
         {/* LEFT — ORDERS LIST */}
         <div className="lg:col-span-2 space-y-5">
 
-          {[1, 2, 3].map((order) => (
+          {orderArray.map((order) => (
             <div
-              key={order}
+              key={order.item._id}
+              id={order.item.product}
               className="bg-white rounded-xl shadow p-5 flex gap-5"
             >
               {/* LEFT SIDE IMAGE */}
@@ -26,15 +56,15 @@ const Orders = () => {
 
                 <div className="space-y-1">
                   <h3 className="font-semibold text-lg">
-                    Wireless Headphones × 1
+                    {order.productDet.name} × {order.item.quantity}
                   </h3>
 
                   <p className="text-sm text-gray-500">
-                    Noise cancelling bluetooth headphones with long battery life.
+                    {order.productDet.description}
                   </p>
 
                   <span className="text-sm font-medium text-blue-600">
-                    Status: Packed
+                    Status: {order.item.status}
                   </span>
                 </div>
 
@@ -65,22 +95,22 @@ const Orders = () => {
             <div className="space-y-2 text-sm text-gray-600">
               <div className="flex justify-between">
                 <span>Total Orders</span>
-                <span>12</span>
+                <span>{orderArray.length}</span>
               </div>
 
               <div className="flex justify-between">
                 <span>Delivered</span>
-                <span className="text-green-600">8</span>
+                <span className="text-green-600">{delivered}</span>
               </div>
 
               <div className="flex justify-between">
-                <span>Processing</span>
-                <span className="text-blue-600">3</span>
+                <span>Pending</span>
+                <span className="text-blue-600">{pending}</span>
               </div>
 
               <div className="flex justify-between">
                 <span>Cancelled</span>
-                <span className="text-red-600">1</span>
+                <span className="text-red-600">0</span>
               </div>
             </div>
           </div>

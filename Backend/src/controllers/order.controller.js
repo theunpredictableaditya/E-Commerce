@@ -59,15 +59,35 @@ const loadOrder = asyncHandler(async(req, res)=>{
         }
     
         const usersOrder = await orderModel.findOne({user: user._id});
+
+        let ordersToSend = [];
+
+        for(const item of usersOrder.items){
+            const product = await productModel.findOne({_id: item.product}).select("name productImage description");
+            console.log(product);
+            ordersToSend.push({
+                item: item,
+                productDet: product
+            })
+        }
+
+        // usersOrder.items.forEach(async item=>{
+        //     const product = await productModel.find({_id: item.product}).select("name productImage description");
+        //     console.log(product);
+        //     ordersToSend.push({
+        //         item: item,
+        //         productDet: product
+        //     })
+        // })
     
-        console.log(usersOrder)
+        console.log(ordersToSend)
     
         if(!usersOrder){
             throw new apiError(401, "No Orders Placed Yet");
         }
     
         res.status(200)
-        .json(new apiResponse(200, usersOrder, "Orders Loaded Successfully"))
+        .json(new apiResponse(200, ordersToSend, "Orders Loaded Successfully"))
 })
 
 export {
