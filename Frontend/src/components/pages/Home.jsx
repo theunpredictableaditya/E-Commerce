@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const categories = ["All", "Electronics", "Groceries", "Clothings"];
 
@@ -70,6 +71,41 @@ const Home = () => {
   //   loadFirstLot()
   
   // }, [])
+
+  const clickedBuyNow = async(productId) => {
+    const order = await fetch(`/api/v1/orders/placeOrder?productId=${productId}&quantity=1`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    const result = await order.json();
+
+    console.log(result);
+    if(result.statusCode === 200){
+      toast.success("Order Placed Successfully");
+    }else{
+      toast.error("Can't Place Your Order: Error Occured")
+    }
+  }
+
+  const clickedAddToCart = async(productId) => {
+    const cart = await fetch(`/api/v1/carts/addToCart?productId=${productId}&quantity=1`,{
+      method: "POSt",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    const result = await cart.json();
+
+    if(result.statusCode === 200){
+      toast.success("Successfully Added To Your Cart");
+    }else{
+      toast.error("Can't Add To Cart: Error Occured");
+    }
+  }
   
 
   return (
@@ -106,7 +142,7 @@ const Home = () => {
           <div key={item._id} className="border rounded-lg p-4 flex gap-4 bg-white">
           {/* Image */}
           <div className="w-24 h-24 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-xs text-gray-400"><img src={item.productImage} alt="" /></span>
+            <span className="text-xs text-gray-400"><img className="rounded-md" src={item.productImage} alt="" /></span>
           </div>
 
           {/* Details */}
@@ -125,10 +161,10 @@ const Home = () => {
 
             {/* Buttons */}
             <div className="flex gap-2 mt-4">
-              <button className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
+              <button onClick={()=>clickedAddToCart(item._id)} className="flex-1 text-sm px-3 py-2 rounded-md border hover:bg-gray-100 transition">
                 Add to Cart
               </button>
-              <button className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
+              <button onClick={()=>clickedBuyNow(item._id)} className="flex-1 text-sm px-3 py-2 rounded-md bg-black text-white hover:opacity-90 transition">
                 Buy Now
               </button>
             </div>
