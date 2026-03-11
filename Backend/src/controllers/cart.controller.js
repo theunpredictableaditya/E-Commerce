@@ -1,7 +1,8 @@
 import { cartModel } from "../models/cart.model.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js"
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { productModel } from "../models/product.model.js";
 
 const addToCart = asyncHandler(async(req, res)=> {
     const productId = req.query.productId;
@@ -48,14 +49,23 @@ const loadCartItems = asyncHandler(async(req, res)=>{
 
     const usersCart = await cartModel.findOne({user: user._id});
 
-    console.log(usersCart)
+    // console.log(usersCart.items);
+    let cartToSend = [];
+    for(const item of usersCart.items){
+        const product = await productModel.findOne({_id: item.product}).select("name productImage description price");
+        console.log(product);
+        cartToSend.push({
+                item: item,
+                productDet: product
+            })
+    }
 
     if(!usersCart){
         throw new apiError(401, "No Carts Exists Yet");
     }
 
     res.status(200)
-    .json(new apiResponse(200, usersCart, "Cart Loaded Successfully"))
+    .json(new apiResponse(200, cartToSend, "Cart Loaded Successfully"))
 })
 
 export {

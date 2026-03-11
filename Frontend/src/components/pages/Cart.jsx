@@ -1,6 +1,28 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 
 const Cart = () => {
+  const [cartArray, setCartArray] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+      useEffect(() => {
+        (async function (){
+    
+          const response = await fetch("/api/v1/carts/loadCarts");
+          
+          const data = await response.json();
+    
+          console.log(data.data);
+          data.data.forEach(item=>{
+            let price = item.productDet.price * item.item.quantity;
+            // console.log(price)
+            setTotalPrice(prev=>prev+price);
+          })
+          
+          setCartArray(data.data);
+        })()
+      
+      }, [])
+
   return (
      <div className="flex-1 p-8 bg-gray-50 overflow-y-auto">
 
@@ -16,20 +38,23 @@ const Cart = () => {
         <div className="xl:col-span-2 flex flex-col gap-6">
 
           {/* Item Card */}
-          <div className="bg-white border rounded-xl shadow-sm p-5 flex gap-5">
+          {cartArray.map(item=>(
+          <div key={item.item.product} className="bg-white border rounded-xl shadow-sm p-5 flex gap-5">
 
             {/* Image */}
-            <div className="w-28 h-28 bg-gray-200 rounded-lg"></div>
+            <div className="w-28 h-28 bg-gray-200 rounded-lg">
+              <img className='rounded-md' src={item.productDet.productImage} alt="product-image" />
+            </div>
 
             {/* Info */}
             <div className="flex flex-col flex-1 gap-2">
 
               <h2 className="font-semibold text-gray-800">
-                Product Name
+                {item.productDet.name}
               </h2>
 
               <p className="text-sm text-gray-500">
-                Short description of the product goes here.
+                {item.productDet.description}
               </p>
 
               {/* Quantity */}
@@ -38,7 +63,8 @@ const Cart = () => {
                 <input
                   type="number"
                   min="1"
-                  defaultValue={1}
+                  onChange={console.log("fixed")}
+                  value={item.item.quantity}
                   className="w-20 border rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
@@ -55,9 +81,10 @@ const Cart = () => {
               </div>
             </div>
           </div>
+          ))}
 
           {/* Duplicate items example */}
-          <div className="bg-white border rounded-xl shadow-sm p-5 flex gap-5">
+          {/* <div className="bg-white border rounded-xl shadow-sm p-5 flex gap-5">
             <div className="w-28 h-28 bg-gray-200 rounded-lg"></div>
 
             <div className="flex flex-col flex-1 gap-2">
@@ -83,7 +110,7 @@ const Cart = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
         </div>
 
@@ -95,13 +122,13 @@ const Cart = () => {
           </h2>
 
           <div className="flex justify-between text-sm mb-2">
-            <span>Selected Items</span>
-            <span>3</span>
+            <span>Total Items</span>
+            <span>{cartArray.length}</span>
           </div>
 
           <div className="flex justify-between text-sm mb-4">
             <span>Total Price</span>
-            <span className="font-semibold">$120</span>
+            <span className="font-semibold">{totalPrice}</span>
           </div>
 
           <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition">
